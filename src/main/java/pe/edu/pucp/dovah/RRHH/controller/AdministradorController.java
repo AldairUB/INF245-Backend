@@ -3,6 +3,7 @@ package pe.edu.pucp.dovah.RRHH.controller;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.dovah.RRHH.exceptions.UsuarioNotFoundException;
@@ -36,11 +37,9 @@ public class AdministradorController {
     */
     @GetMapping("/administrador")
     List<Administrador> all(){
-
-        return repository.findAll();
+        return repository.listarActivos();
 
     }
-
      /*
 
         Listar un administrador en especifico
