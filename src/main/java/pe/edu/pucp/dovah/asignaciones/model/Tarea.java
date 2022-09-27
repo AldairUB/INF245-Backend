@@ -25,6 +25,9 @@ public class Tarea {
     @ManyToMany(mappedBy = "listaTareas")
     List<Usuario> listaUsuarios;
 
+    @ManyToMany
+    List<Documento> listaDocumentos;
+
     protected Tarea() {}
 
     public Tarea(String descripcion) {
