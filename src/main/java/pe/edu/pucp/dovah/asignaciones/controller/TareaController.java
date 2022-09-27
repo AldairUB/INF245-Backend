@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.pucp.dovah.asignaciones.exception.DocumentoNotFoundException;
 import pe.edu.pucp.dovah.asignaciones.exception.TareaNotFoundException;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
+import pe.edu.pucp.dovah.asignaciones.repository.DocumentoRepository;
 import pe.edu.pucp.dovah.asignaciones.repository.TareaRepository;
 
 import java.util.List;
@@ -22,11 +24,13 @@ import java.util.Map;
 @BasePathAwareController
 @RestController
 public class TareaController {
-    private final TareaRepository repository;
+    private final TareaRepository tareaRepository;
+    private final DocumentoRepository documentoRepository;
     private final static Logger log = LoggerFactory.getLogger(TareaController.class);
 
-    public TareaController(TareaRepository repository) {
-        this.repository = repository;
+    public TareaController(TareaRepository tareaRepository, DocumentoRepository documentoRepository) {
+        this.tareaRepository = tareaRepository;
+        this.documentoRepository = documentoRepository;
     }
 
     /*
@@ -34,7 +38,7 @@ public class TareaController {
      */
     @GetMapping("/tareas")
     List<Tarea> all() {
-        return repository.findAll();
+        return tareaRepository.findAll();
     }
 
     /*
@@ -42,7 +46,7 @@ public class TareaController {
      */
     @GetMapping("/tareas/{id}")
     Tarea one(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
+        return tareaRepository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
     }
 
     /*
@@ -53,7 +57,7 @@ public class TareaController {
         log.info("Agregando tarea...");
         var json = new JSONObject(newTarea);
         var tarea = new Tarea(json.getString("descripcion"));
-        return repository.save(tarea);
+        return tareaRepository.save(tarea);
     }
 
     /*
@@ -64,10 +68,30 @@ public class TareaController {
         var json = new JSONObject(map);
         Long id = json.getLong("id");
         int nota = json.getInt("nota");
-        var tarea = repository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
+        var tarea = tareaRepository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
         log.info(String.format("Modificando nota '%d' por nota '%d' de la tarea con id '%d'",
                 tarea.getNota(), nota, id));
         tarea.setNota(nota);
-        return repository.save(tarea);
+        return tareaRepository.save(tarea);
+    }
+
+    /**
+     * Agregar documento a tarea
+     * @param map json con la siguiente estructura
+     *            {
+     *              "idTarea": num,
+     *              "idDocumento": num
+     *            }
+     * @return Tarea modificada
+     */
+    @PostMapping("/tareas/agregarDocumento")
+    Tarea agregarDocumento(@RequestBody Map<String, Object> map) {
+        var json = new JSONObject(map);
+        Long idTarea = json.getLong("idTarea");
+        Long idDoc = json.getLong("idDocumento");
+        var tarea = tareaRepository.findById(idTarea).orElseThrow(() -> new TareaNotFoundException(idTarea));
+        var doc = documentoRepository.findById(idDoc)
+                .orElseThrow(() -> new DocumentoNotFoundException(idDoc));
+        return tarea;
     }
 }

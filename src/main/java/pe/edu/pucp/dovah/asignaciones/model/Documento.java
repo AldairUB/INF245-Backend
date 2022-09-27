@@ -26,6 +26,14 @@ public class Documento {
 
     public Documento(String nombre) {
         this.nombre = nombre;
+        this.fechaCreacion = LocalDateTime.now();
+        this.activo = true;
+        this.url = "";
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Documento(Nombre='%s')", this.getNombre());
     }
 
     public Long getId() {

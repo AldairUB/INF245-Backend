@@ -7,6 +7,7 @@
 
 package pe.edu.pucp.dovah.asignaciones.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
 
