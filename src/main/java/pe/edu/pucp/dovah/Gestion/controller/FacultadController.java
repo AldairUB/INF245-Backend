@@ -31,7 +31,9 @@ public class FacultadController {
     /*Listar todos las facultades*/
     @GetMapping("/facultad")
     List<Facultad> all(){
-        return repository.findAll();
+
+        return repository.listarActivos();
+
     }
 
     /*Buscar una facultad*/
