@@ -25,7 +25,7 @@ public class Tarea {
     @ManyToMany(mappedBy = "listaTareas")
     List<Usuario> listaUsuarios;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     List<Documento> listaDocumentos;
 
     protected Tarea() {}
@@ -71,5 +71,13 @@ public class Tarea {
 
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public List<Usuario> getListaUsuarios() {
+        return listaUsuarios;
+    }
+
+    public List<Documento> getListaDocumentos() {
+        return listaDocumentos;
     }
 }

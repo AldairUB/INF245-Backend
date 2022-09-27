@@ -28,7 +28,7 @@ public class Documento {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
         this.activo = true;
-        this.url = "";
+        this.url = "http://localhost:8081/api/v1/documento/blob/" + id;
     }
 
     @Override

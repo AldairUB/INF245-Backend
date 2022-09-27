@@ -92,6 +92,7 @@ public class TareaController {
         var tarea = tareaRepository.findById(idTarea).orElseThrow(() -> new TareaNotFoundException(idTarea));
         var doc = documentoRepository.findById(idDoc)
                 .orElseThrow(() -> new DocumentoNotFoundException(idDoc));
-        return tarea;
+        tarea.getListaDocumentos().add(doc);
+        return tareaRepository.save(tarea);
     }
 }
