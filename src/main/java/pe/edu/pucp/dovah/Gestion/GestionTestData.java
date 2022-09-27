@@ -17,7 +17,7 @@ public class GestionTestData {
     }
 
     @Bean
-    public CommandLineRunner loadTareas() {
+    public CommandLineRunner loadCursos() {
         return (args) -> {
             if (cursoRepository.findAll().isEmpty()) {
                 log.info("Agregando datos...");
