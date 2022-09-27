@@ -5,7 +5,7 @@
  * Descripcion: Clase para cargar informacion de base de datos de un archivo
  */
 
-package pe.edu.pucp.dovah;
+package pe.edu.pucp.dovah.config;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;

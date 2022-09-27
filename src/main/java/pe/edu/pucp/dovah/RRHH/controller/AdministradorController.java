@@ -7,9 +7,7 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.dovah.RRHH.exceptions.UsuarioNotFoundException;
 import pe.edu.pucp.dovah.RRHH.model.Administrador;
-import pe.edu.pucp.dovah.RRHH.model.Profesor;
 import pe.edu.pucp.dovah.RRHH.repository.AdministradorRepository;
-import pe.edu.pucp.dovah.asignaciones.controller.TareaController;
 
 import java.util.List;
 import java.util.Map;
