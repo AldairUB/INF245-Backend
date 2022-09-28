@@ -44,9 +44,10 @@ public class DocumentoController {
         return documentoRepository.findById(id).orElseThrow(() -> new DocumentoNotFoundException(id));
     }
 
-    @GetMapping(value = "/documento/blob/{id}")
-    ResponseEntity<StreamingResponseBody> getDocBlob(@PathVariable Long id) {
-        Documento doc = documentoRepository.findById(id).orElseThrow(() -> new DocumentoNotFoundException(id));
+    @GetMapping(value = "/documento/blob/{id}/{nombre}")
+    ResponseEntity<StreamingResponseBody> getDocBlob(@PathVariable Long id, @PathVariable String nombre) {
+        Documento doc = documentoRepository.findByIdAndNombre(id, nombre)
+                .orElseThrow(() -> new DocumentoNotFoundException(id));
         StreamingResponseBody responseBody = outputStream -> outputStream.write(doc.getBlobDoc());
         Tika tika = new Tika();
         HttpHeaders headers = new HttpHeaders();

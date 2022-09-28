@@ -8,6 +8,8 @@ import org.hibernate.annotations.Type;
 
 import javax.activation.MimeType;
 import javax.persistence.*;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,7 +65,18 @@ public class Documento {
     }
 
     public String getUrl() {
-        return "http://localhost:8081/api/v1/documento/blob/" + id;
+        String urlToDecode = String.format("http://localhost:8081/api/v1/documento/blob/%d/%s", id, nombre);
+        String decodedURL = URLDecoder.decode(urlToDecode, StandardCharsets.UTF_8);
+        URL url;
+        URI uri;
+        try {
+            url = new URL(decodedURL);
+            uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(),
+                    url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        } catch (MalformedURLException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        return uri.toASCIIString();
     }
 
     public void setUrl(String url) {
