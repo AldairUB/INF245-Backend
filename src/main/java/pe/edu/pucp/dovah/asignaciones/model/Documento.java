@@ -1,12 +1,17 @@
 package pe.edu.pucp.dovah.asignaciones.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 
+import javax.activation.MimeType;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@JsonIgnoreProperties(value = { "blobDoc" })
 @Entity
 public class Documento {
     @Id
@@ -20,6 +25,7 @@ public class Documento {
     private String url;
     @Lob
     private byte[] blobDoc;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime fechaCreacion;
 
     protected Documento() {}
@@ -28,7 +34,7 @@ public class Documento {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
         this.activo = true;
-        this.url = "http://localhost:8081/api/v1/documento/blob/" + id;
+        this.url = "";
     }
 
     @Override
@@ -48,10 +54,6 @@ public class Documento {
         return listaTareas;
     }
 
-    public void setListaTareas(List<Tarea> listaTareas) {
-        this.listaTareas = listaTareas;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -61,7 +63,7 @@ public class Documento {
     }
 
     public String getUrl() {
-        return url;
+        return "http://localhost:8081/api/v1/documento/blob/" + id;
     }
 
     public void setUrl(String url) {

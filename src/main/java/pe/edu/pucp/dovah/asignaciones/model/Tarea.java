@@ -25,7 +25,7 @@ public class Tarea {
     @ManyToMany(mappedBy = "listaTareas")
     List<Usuario> listaUsuarios;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     List<Documento> listaDocumentos;
 
     protected Tarea() {}
