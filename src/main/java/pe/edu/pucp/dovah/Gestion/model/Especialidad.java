@@ -6,6 +6,9 @@
  */
 package pe.edu.pucp.dovah.Gestion.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class Especialidad {
     private String nombreCoordinador;
     private boolean activo;
     @ManyToOne
-    @JoinColumn(name="idFacultad")
+    @JsonBackReference
     private Facultad facultad;
 
     @OneToMany(mappedBy = "especialidad")
