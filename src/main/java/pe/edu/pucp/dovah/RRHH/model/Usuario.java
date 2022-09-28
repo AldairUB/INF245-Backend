@@ -1,5 +1,6 @@
 package pe.edu.pucp.dovah.RRHH.model;
 
+import pe.edu.pucp.dovah.asignaciones.model.Documento;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
 
 import javax.persistence.*;
@@ -29,10 +30,11 @@ public abstract class Usuario {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActivacion;
 
-
     @ManyToMany
     private List<Tarea> listaTareas;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Documento>listaDocumentos;
     protected Usuario() {}
 
     public Usuario(String nombre,
@@ -127,4 +129,11 @@ public abstract class Usuario {
         this.password = password;
     }
 
+    public List<Tarea> getListaTareas() {
+        return listaTareas;
+    }
+
+    public List<Documento> getListaDocumentos() {
+        return listaDocumentos;
+    }
 }
