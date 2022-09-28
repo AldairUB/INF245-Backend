@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.dovah.Gestion.exception.EspecialidadNotFoundException;
 import pe.edu.pucp.dovah.Gestion.exception.FacultadNotFoundException;
 import pe.edu.pucp.dovah.Gestion.model.Especialidad;
+import pe.edu.pucp.dovah.Gestion.model.Facultad;
 import pe.edu.pucp.dovah.Gestion.repository.EspecialidadRepository;
 import pe.edu.pucp.dovah.Gestion.repository.FacultadRepository;
 
@@ -25,14 +26,14 @@ import java.util.Map;
 public class EspecialidadController {
 
     private final EspecialidadRepository repository;
+    private final FacultadRepository facultadRepository;
 
-    private final FacultadRepository repositoryFacultad;
     private final static Logger log = LoggerFactory.getLogger(EspecialidadController.class);
 
     public EspecialidadController(EspecialidadRepository repository, FacultadRepository repositoryFacultad) {
 
         this.repository = repository;
-        this.repositoryFacultad = repositoryFacultad;
+        this.facultadRepository = repositoryFacultad;
 
     }
     /*Listar todos las especialidades*/
@@ -52,28 +53,16 @@ public class EspecialidadController {
     void eliminarEspecialidad(@PathVariable int id){ repository.deleteById(id); }
 
     /*Insertar una especialidad*/
+
     @PostMapping("/especialidad")
     Especialidad nuevaEspecialidad(@RequestBody Map<String,Object> nuevaEspecialidad){
         log.info("Agregando especialidad");
         var json = new JSONObject(nuevaEspecialidad);
         var especialidad = new Especialidad(json.getString("codigo"),json.getString("nombre"),
                 json.getString("nombreCoordinador"));
-
         return repository.save(especialidad);
     }
-/*
-    @PostMapping("/especialidad/agregarFacultad")
-    Especialidad agregarFacultad(Map<String, Object>map){
-        var json = new JSONObject(map);
-        int idFacultad = json.getInt("idFacultad");
-        int idEspecialidad = json.getInt("idEspecialidad");
-        var especialidad = repository.findById(idEspecialidad).orElseThrow(
-                                      ()-> new EspecialidadNotFoundException(idEspecialidad));
-        var facultad = repositoryFacultad.findById(idFacultad)
-                .orElseThrow(()->new FacultadNotFoundException(idFacultad));
 
-        return especialidad;
-    }
 
- */
+
 }

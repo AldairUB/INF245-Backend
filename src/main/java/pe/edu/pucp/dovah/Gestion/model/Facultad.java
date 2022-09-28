@@ -6,6 +6,8 @@
  */
 package pe.edu.pucp.dovah.Gestion.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,7 +23,8 @@ public class Facultad {
     private boolean activo;
     private int anhoFundacion;
     //@Transient
-    @OneToMany(mappedBy = "facultad")
+    @OneToMany
+    @JsonManagedReference
     private List<Especialidad> especialidades;
 
     protected Facultad() {}
