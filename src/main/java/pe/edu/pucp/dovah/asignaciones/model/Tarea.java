@@ -7,6 +7,9 @@
 
 package pe.edu.pucp.dovah.asignaciones.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import pe.edu.pucp.dovah.RRHH.model.Usuario;
 
 import javax.persistence.*;
@@ -14,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Tarea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +31,7 @@ public class Tarea {
     @ManyToMany(mappedBy = "listaTareas")
     List<Usuario> listaUsuarios;
 
+    @JsonManagedReference
     @ManyToMany
     List<Documento> listaDocumentos;
 

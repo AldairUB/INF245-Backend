@@ -1,10 +1,14 @@
 package pe.edu.pucp.dovah.asignaciones.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
+import pe.edu.pucp.dovah.RRHH.model.Usuario;
 
 import javax.activation.MimeType;
 import javax.persistence.*;
@@ -14,13 +18,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonIgnoreProperties(value = { "blobDoc" })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Documento {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonBackReference
     @ManyToMany(mappedBy = "listaDocumentos")
     private List<Tarea> listaTareas;
+
+    @ManyToOne
+    private Usuario usuario;
     @ColumnDefault("true")
     private boolean activo;
     private String nombre;
