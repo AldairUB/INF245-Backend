@@ -10,7 +10,6 @@ package pe.edu.pucp.dovah.asignaciones.controller;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.dovah.asignaciones.exception.DocumentoNotFoundException;
 import pe.edu.pucp.dovah.asignaciones.exception.TareaNotFoundException;
@@ -21,7 +20,7 @@ import pe.edu.pucp.dovah.asignaciones.repository.TareaRepository;
 import java.util.List;
 import java.util.Map;
 
-@BasePathAwareController
+@RequestMapping("/api/v1/")
 @RestController
 public class TareaController {
     private final TareaRepository tareaRepository;
