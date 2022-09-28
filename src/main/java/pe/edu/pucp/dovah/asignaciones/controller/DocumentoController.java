@@ -50,7 +50,7 @@ public class DocumentoController {
         StreamingResponseBody responseBody = outputStream -> outputStream.write(doc.getBlobDoc());
         Tika tika = new Tika();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(ContentDisposition.attachment().filename(doc.getNombre()).build());
+        headers.setContentDisposition(ContentDisposition.inline().filename(doc.getNombre()).build());
         headers.setContentLength(doc.getBlobDoc().length);
         headers.setContentType(MediaType.parseMediaType(tika.detect(doc.getBlobDoc())));
         return ResponseEntity.ok()
