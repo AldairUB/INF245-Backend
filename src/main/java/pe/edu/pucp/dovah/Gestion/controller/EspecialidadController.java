@@ -39,18 +39,51 @@ public class EspecialidadController {
     /*Listar todos las especialidades*/
     @GetMapping("/especialidad")
     List<Especialidad> all(){
-        return repository.findAll();
+        return repository.queryAllByActivoIsTrue();
     }
 
     /*Buscar una especialidad*/
     @GetMapping("/especialidad/{id}")
     Especialidad obtenerEspecialidadPorId(@PathVariable int id){
-        return repository.findById(id).orElseThrow(() -> new EspecialidadNotFoundException(id));
+        return repository.findByIdEspecialidadAndActivoIsTrue(id).orElseThrow(()
+                -> new EspecialidadNotFoundException(id));
+    }
+
+    /*Listar especialidades por facultad*/
+    @GetMapping("/especialidadListar/{id}")
+    List<Especialidad> listarEspecialidadesPorFacultad(@PathVariable int id){
+        List<Especialidad> especialidads =repository.findByFacultad_IdFacultad(id);
+        for (Especialidad esp: especialidads){
+            if (esp.isActivo())
+                especialidads.remove(esp);
+        }
+        return especialidads;
     }
 
     /*Eliminar una especialidad*/
-    @DeleteMapping("/especialidad/{id}")
-    void eliminarEspecialidad(@PathVariable int id){ repository.deleteById(id); }
+    @PostMapping("/especialidad/eliminar")
+    Especialidad eliminarEspecialidad(@RequestBody Map<String, Object> map){
+
+        var json = new JSONObject(map);
+        int idEspecialidad = json.getInt("idEspecialidad");
+        var especialidad = repository.findByIdEspecialidadAndActivoIsTrue(idEspecialidad)
+                .orElseThrow(()-> new EspecialidadNotFoundException(idEspecialidad));
+        log.info(String.format("Eliminando especialidad con id '%d'", especialidad.getIdEspecialidad()));
+        especialidad.setActivo(false);
+        var facultad = facultadRepository.findByIdFacultadAndActivoIsTrue(1).orElseThrow(()
+                -> new FacultadNotFoundException(1));
+        /*int indice = facultad.getEspecialidades().indexOf(especialidad);
+        List <Especialidad> especialidads = facultad.getEspecialidades();
+        especialidads[indice].*/
+        for (Especialidad esp : facultad.getEspecialidades()){
+            if (esp.getIdEspecialidad()==especialidad.getIdEspecialidad()){
+                esp.setActivo(false);
+                facultadRepository.save(facultad);
+                break;
+            }
+        }
+        return repository.save(especialidad);
+    }
 
     /*Insertar una especialidad*/
 
@@ -59,10 +92,27 @@ public class EspecialidadController {
         log.info("Agregando especialidad");
         var json = new JSONObject(nuevaEspecialidad);
         var especialidad = new Especialidad(json.getString("codigo"),json.getString("nombre"),
-                json.getString("nombreCoordinador"));
+                json.getString("nombreCoordinador"), json.getString("descripcion"));
         return repository.save(especialidad);
     }
 
-
+    @PostMapping("/especialidad/actualizar")
+    Especialidad actualizarEspecialidad(@RequestBody Map<String, Object> map) {
+        var json = new JSONObject(map);
+        int idEspecialidad = json.getInt("idEspecialidad");
+        String nombre = json.getString("nombre");
+        String codigo = json.getString("codigo");
+        String nombreCoordinador = json.getString("nombreCoordinador");
+        String descripcion = json.getString("descripcion");
+        var especialidad = repository.findByIdEspecialidadAndActivoIsTrue(idEspecialidad).orElseThrow(()
+                ->new FacultadNotFoundException(idEspecialidad));
+        log.info(String.format("Actualizando atributos de especialidad con id '%d'",
+                especialidad.getIdEspecialidad()));
+        especialidad.setNombre(nombre);
+        especialidad.setCodigo(codigo);
+        especialidad.setNombreCoordinador(nombreCoordinador);
+        especialidad.setDescripcion(descripcion);
+        return repository.save(especialidad);
+    }
 
 }

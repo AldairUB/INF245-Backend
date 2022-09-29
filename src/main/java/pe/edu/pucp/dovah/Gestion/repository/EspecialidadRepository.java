@@ -6,8 +6,15 @@
  */
 package pe.edu.pucp.dovah.Gestion.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pe.edu.pucp.dovah.Gestion.model.Especialidad;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface EspecialidadRepository extends JpaRepository<Especialidad,Integer> {
+    List<Especialidad> queryAllByActivoIsTrue();
+    Optional<Especialidad> findByIdEspecialidadAndActivoIsTrue(int idEspecialidad);
+    List<Especialidad> findByFacultad_IdFacultad(int idFacultad);
 }

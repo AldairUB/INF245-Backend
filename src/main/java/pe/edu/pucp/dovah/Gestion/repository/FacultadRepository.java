@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FacultadRepository extends JpaRepository<Facultad,Integer>{
-    @Query(value = "SELECT a FROM Facultad a WHERE a.activo = true")
-    List<Facultad> listarActivos();
+
+    List<Facultad> queryAllByActivoIsTrue();
     @EntityGraph(attributePaths = {"especialidades"})
-    Optional<Facultad> findByIdFacultad(int idFacultad);
+    Optional<Facultad> findByIdFacultadAndActivoIsTrue(int idFacultad);
+
 }

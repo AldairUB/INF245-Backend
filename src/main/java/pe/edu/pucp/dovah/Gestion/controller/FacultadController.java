@@ -6,7 +6,6 @@
  */
 package pe.edu.pucp.dovah.Gestion.controller;
 
-import org.hibernate.annotations.SQLUpdate;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import pe.edu.pucp.dovah.Gestion.model.Facultad;
 import pe.edu.pucp.dovah.Gestion.repository.EspecialidadRepository;
 import pe.edu.pucp.dovah.Gestion.repository.FacultadRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -42,19 +40,33 @@ public class FacultadController {
     @GetMapping("/facultad")
     List<Facultad> all(){
 
-        return repository.listarActivos();
+        return repository.queryAllByActivoIsTrue();
 
     }
 
     /*Buscar una facultad*/
     @GetMapping("/facultad/{id}")
     Facultad obtenerFacultadPorId(@PathVariable int id){
-        return repository.findByIdFacultad(id).orElseThrow(() -> new FacultadNotFoundException(id));
+        //var facultad = repository.findByIdFacultadAndActivoIsTrue(id).orElseThrow(() -> new FacultadNotFoundException(id));
+        return repository.findByIdFacultadAndActivoIsTrue(id).orElseThrow(() -> new FacultadNotFoundException(id));
     }
 
     /*Eliminar una facultad*/
-    @DeleteMapping("/facultad/{id}")
-    void eliminarFacultad(@PathVariable int id){ repository.deleteById(id); }
+    @PostMapping("/facultad/eliminar")
+    Facultad eliminarFacultad(@RequestBody Map<String, Object> map){
+
+        var json = new JSONObject(map);
+        int id = json.getInt("idFacultad");
+        var facultad = repository.findByIdFacultadAndActivoIsTrue(id).orElseThrow(()
+                -> new FacultadNotFoundException(id));
+        log.info(String.format("Eliminando facultad con id '%d'", facultad.getIdFacultad()));
+        facultad.setActivo(false);
+        for (Especialidad esp: facultad.getEspecialidades()){
+            esp.setActivo(false);
+            repositoryEsp.save(esp);
+        }
+        return repository.save(facultad);
+    }
 
     /*Insertar una facultad*/
     @PostMapping("/facultad")
@@ -67,16 +79,15 @@ public class FacultadController {
         return repository.save(facultad);
     }
 
-
     @PostMapping("/facultad/agregarEspecialidad")
     Facultad agregarEspecialidad(@RequestBody Map<String, Object> map){
 
         var json = new JSONObject(map);
         int idFacultad = json.getInt("idFacultad");
         int idEspecialidad = json.getInt("idEspecialidad");
-        var facultad = repository.findByIdFacultad(idFacultad).orElseThrow(()->
+        var facultad = repository.findByIdFacultadAndActivoIsTrue(idFacultad).orElseThrow(()->
                                 new FacultadNotFoundException(idFacultad));
-        var esp = repositoryEsp.findById(idEspecialidad)
+        var esp = repositoryEsp.findByIdEspecialidadAndActivoIsTrue(idEspecialidad)
                                 .orElseThrow(()-> new EspecialidadNotFoundException(idEspecialidad));
         facultad.getEspecialidades().add(esp);
         esp.setFacultad(facultad);
@@ -84,5 +95,21 @@ public class FacultadController {
         return repository.save(facultad);
     }
 
+    @PostMapping("/facultad/actualizar")
+    Facultad actualizarFacultad(@RequestBody Map<String, Object> map) {
+        var json = new JSONObject(map);
+        int id = json.getInt("idFacultad");
+        String nombre = json.getString("nombre");
+        String decano = json.getString("decano");
+        int anhoFundacion = json.getInt("anhoFundacion");
+        var facultad = repository.findByIdFacultadAndActivoIsTrue(id).orElseThrow(()
+                ->new FacultadNotFoundException(id));
+        log.info(String.format("Actualizando atributos de facultad con id '%d'",
+                facultad.getIdFacultad()));
+        facultad.setNombre(nombre);
+        facultad.setDecano(decano);
+        facultad.setAnhoFundacion(anhoFundacion);
+        return repository.save(facultad);
+    }
 
 }

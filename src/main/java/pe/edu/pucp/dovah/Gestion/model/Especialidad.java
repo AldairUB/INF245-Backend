@@ -22,6 +22,7 @@ public class Especialidad {
     private String nombre;
     private String codigo;
     private String nombreCoordinador;
+    private String descripcion;
     private boolean activo;
     @ManyToOne
     @JsonBackReference
@@ -32,10 +33,11 @@ public class Especialidad {
 
     protected Especialidad() {}
 
-    public Especialidad(String nombre, String codigo, String nombreCoordinador){
+    public Especialidad(String nombre, String codigo, String nombreCoordinador,String descripcion){
         this.nombre = nombre;
         this.codigo = codigo;
         this.nombreCoordinador = nombreCoordinador;
+        this.descripcion = descripcion;
         this.activo = true;
     }
 
@@ -83,6 +85,14 @@ public class Especialidad {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Facultad getFacultad() {
