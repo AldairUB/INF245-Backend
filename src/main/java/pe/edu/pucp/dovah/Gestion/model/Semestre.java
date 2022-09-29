@@ -6,7 +6,11 @@
  */
 package pe.edu.pucp.dovah.Gestion.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,32 +19,39 @@ public class Semestre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    /* Año academico y Periodo falta */
     private int idSemestre;
-    private String codigo;
-    private Date fechaInicio;
-    private Date fechaFin;
-    private Date fechaCierreNotasParcial;
-    private Date fechaCierreNotasFinal;
+    private String anhoAcademico;
+    private String periodo;
+
+    private String fechaInicio;
+
+    private String fechaFin;
+
+    private String fechaCierreNotasParcial;
+
+    private String fechaCierreNotasFinal;
     private boolean activo;
 
-    @OneToMany(mappedBy = "semestre")
+    @OneToMany
+    @JsonManagedReference
     private List<Curso> cursos;
 
     protected Semestre() {}
 
-    public Semestre(String codigo, Date fechaInicio,Date fechaFin,Date fechaCierreNotasParcial,
-                    Date fechaCierreNotasFinal){
-        this.codigo = codigo;
+    public Semestre(String anhoAcademico, String periodo,String fechaInicio,String fechaFin,
+                    String fechaCierreNotasParcial, String fechaCierreNotasFinal){
+        this.anhoAcademico = anhoAcademico;
+        this.periodo = periodo;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.fechaCierreNotasParcial = fechaCierreNotasParcial;
+        this.fechaCierreNotasFinal = fechaCierreNotasFinal;
         this.activo = true;
     }
-
     @Override
     public String toString() {
-        return String.format("Semestre(codigo='%s')", this.getCodigo());
+        return String.format("Semestre(anhoAcademico='%s' periodo='%s')",
+                this.getAnhoAcademico(),this.getPeriodo());
     }
 
     public int getIdSemestre() {
@@ -51,43 +62,51 @@ public class Semestre {
         this.idSemestre = idSemestre;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getAnhoAcademico() {
+        return anhoAcademico;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setAnhoAcademico(String anhoAcademico) {
+        this.anhoAcademico = anhoAcademico;
     }
 
-    public Date getFechaInicio() {
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
+    }
+
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public Date getFechaCierreNotasParcial() {
+    public String getFechaCierreNotasParcial() {
         return fechaCierreNotasParcial;
     }
 
-    public void setFechaCierreNotasParcial(Date fechaCierreNotasParcial) {
+    public void setFechaCierreNotasParcial(String fechaCierreNotasParcial) {
         this.fechaCierreNotasParcial = fechaCierreNotasParcial;
     }
 
-    public Date getFechaCierreNotasFinal() {
+    public String getFechaCierreNotasFinal() {
         return fechaCierreNotasFinal;
     }
 
-    public void setFechaCierreNotasFinal(Date fechaCierreNotasFinal) {
+    public void setFechaCierreNotasFinal(String fechaCierreNotasFinal) {
         this.fechaCierreNotasFinal = fechaCierreNotasFinal;
     }
 

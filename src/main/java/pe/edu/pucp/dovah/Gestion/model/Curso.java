@@ -19,8 +19,6 @@ public class Curso {
     private int idCurso;
     private String clave;
     private String nombre;
-    private String horario;
-    private String formulaNotaFinal;
     private String descripcion;
     private Date fechaCreacion;
     private Date fechaFinalizacion;
@@ -70,22 +68,6 @@ public class Curso {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getHorario() {
-        return horario;
-    }
-
-    public void setHorario(String horario) {
-        this.horario = horario;
-    }
-
-    public String getFormulaNotaFinal() {
-        return formulaNotaFinal;
-    }
-
-    public void setFormulaNotaFinal(String formulaNotaFinal) {
-        this.formulaNotaFinal = formulaNotaFinal;
     }
 
     public String getDescripcion() {
