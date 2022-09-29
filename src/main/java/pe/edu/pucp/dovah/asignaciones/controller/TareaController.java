@@ -45,7 +45,7 @@ public class TareaController {
      */
     @GetMapping("/tareas/{id}")
     Tarea one(@PathVariable Long id) {
-        return tareaRepository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
+        return tareaRepository.queryById(id).orElseThrow(() -> new TareaNotFoundException(id));
     }
 
     /*
@@ -67,7 +67,7 @@ public class TareaController {
         var json = new JSONObject(map);
         Long id = json.getLong("id");
         int nota = json.getInt("nota");
-        var tarea = tareaRepository.findById(id).orElseThrow(() -> new TareaNotFoundException(id));
+        var tarea = tareaRepository.queryById(id).orElseThrow(() -> new TareaNotFoundException(id));
         log.info(String.format("Modificando nota '%d' por nota '%d' de la tarea con id '%d'",
                 tarea.getNota(), nota, id));
         tarea.setNota(nota);
@@ -88,7 +88,7 @@ public class TareaController {
         var json = new JSONObject(map);
         Long idTarea = json.getLong("idTarea");
         Long idDoc = json.getLong("idDocumento");
-        var tarea = tareaRepository.findById(idTarea).orElseThrow(() -> new TareaNotFoundException(idTarea));
+        var tarea = tareaRepository.queryById(idTarea).orElseThrow(() -> new TareaNotFoundException(idTarea));
         var doc = documentoRepository.findById(idDoc)
                 .orElseThrow(() -> new DocumentoNotFoundException(idDoc));
         tarea.getListaDocumentos().add(doc);

@@ -15,6 +15,5 @@ import java.util.Optional;
 
 public interface TareaRepository extends JpaRepository<Tarea, Long> {
     @EntityGraph(attributePaths = {"listaDocumentos"})
-    @Override
-    Optional<Tarea> findById(Long id);
+    Optional<Tarea> queryById(Long id);
 }
