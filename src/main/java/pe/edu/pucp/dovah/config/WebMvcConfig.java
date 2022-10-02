@@ -18,13 +18,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @EnableAsync
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/v1/**")
-                .allowedOrigins("http://localhost:3000", "http://localhost:8081", "http://localhost")
-                .allowedMethods("*");
-    }
-
-    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("hello");
         registry.addViewController("/login").setViewName("login");
