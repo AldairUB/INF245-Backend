@@ -16,8 +16,5 @@ import java.util.Optional;
 
 @Repository
 public interface RolRepository extends JpaRepository<Rol,Integer> {
-    @EntityGraph(attributePaths = {"listaUsuarios"})
-    Optional<Rol>queryByIdRol(int id);
-
 
 }

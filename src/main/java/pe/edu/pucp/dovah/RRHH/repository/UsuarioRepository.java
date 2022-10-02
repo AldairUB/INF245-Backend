@@ -6,8 +6,17 @@
  */
 package pe.edu.pucp.dovah.RRHH.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pe.edu.pucp.dovah.RRHH.model.Usuario;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface UsuarioRepository extends JpaRepository<Usuario,Integer>{
+
+    @EntityGraph(attributePaths = {"listaRoles"})
+    Optional<Usuario> queryAllByIdUsuario(int id);
+
+
 }
