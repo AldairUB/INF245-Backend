@@ -10,6 +10,7 @@ package pe.edu.pucp.dovah.asignaciones.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import pe.edu.pucp.dovah.Gestion.model.Curso;
 import pe.edu.pucp.dovah.RRHH.model.Usuario;
 
 import javax.persistence.*;
@@ -34,6 +35,12 @@ public class Tarea {
     @JsonManagedReference
     @ManyToMany
     List<Documento> listaDocumentos;
+
+    @OneToOne
+    Tarea tareaPadre;
+
+    @ManyToOne
+    Curso curso;
 
     protected Tarea() {}
 
@@ -86,5 +93,21 @@ public class Tarea {
 
     public List<Documento> getListaDocumentos() {
         return listaDocumentos;
+    }
+
+    public Tarea getTareaPadre() {
+        return tareaPadre;
+    }
+
+    public void setTareaPadre(Tarea tareaPadre) {
+        this.tareaPadre = tareaPadre;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
     }
 }
