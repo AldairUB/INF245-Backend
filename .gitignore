@@ -36,3 +36,4 @@ build/
 database.properties
 logfile.txt
 *.gz
+*.tmp
