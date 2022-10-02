@@ -15,6 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface AdministradorRepository extends JpaRepository<Administrador, Integer> {
-    @Query(value = "SELECT a FROM Administrador a WHERE a.activo=true")
-    List<Administrador>listarActivos();
+
+    List<Administrador>queryAllByActivoIsTrue();
+
 }

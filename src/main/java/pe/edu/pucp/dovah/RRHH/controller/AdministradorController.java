@@ -37,7 +37,7 @@ public class AdministradorController {
     */
     @GetMapping("/administrador")
     List<Administrador> all(){
-        return repository.listarActivos();
+        return repository.queryAllByActivoIsTrue();
 
     }
      /*

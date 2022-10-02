@@ -36,7 +36,7 @@ public class FacultadController {
 
     }
 
-    /*Listar todos las facultades*/
+    /*Listar todas las facultades*/
     @GetMapping("/facultad")
     List<Facultad> all(){
 

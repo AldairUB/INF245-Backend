@@ -40,7 +40,7 @@ public class ProfesorController {
     @GetMapping("/profesor")
     List<Profesor> all(){
 
-        return repository.findAll();
+        return repository.queryAllByActivoIsTrue();
 
     }
 
@@ -79,6 +79,14 @@ public class ProfesorController {
 
 
         return repository.save(profesor);
+
+    }
+
+    @GetMapping("/profesor/buscarPorCodigo/{codigo}")
+    List<Profesor> listarProfesores(@PathVariable String codigo){
+
+        return repository.findByCodigoPUCPContainingAndActivoIsTrue(codigo);
+
 
     }
 
