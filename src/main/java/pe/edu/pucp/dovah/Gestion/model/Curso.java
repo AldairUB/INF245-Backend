@@ -6,9 +6,13 @@
 */
 package pe.edu.pucp.dovah.Gestion.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import pe.edu.pucp.dovah.asignaciones.model.Tarea;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Curso {
@@ -31,6 +35,10 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name="idSemestre")
     private Semestre semestre;
+
+    @OneToMany
+    @JsonManagedReference
+    private List<Tarea> tareas;
 
 
     protected Curso() {}
@@ -116,5 +124,13 @@ public class Curso {
 
     public void setSemestre(Semestre semestre) {
         this.semestre = semestre;
+    }
+
+    public List<Tarea> getTareas() {
+        return tareas;
+    }
+
+    public void setTareas(List<Tarea> tareas) {
+        this.tareas = tareas;
     }
 }
