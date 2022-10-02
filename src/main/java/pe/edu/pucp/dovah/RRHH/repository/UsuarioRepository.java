@@ -17,6 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer>{
 
     @EntityGraph(attributePaths = {"listaRoles"})
     Optional<Usuario> queryAllByIdUsuario(int id);
-
+    @EntityGraph(attributePaths = {"listaRoles"})
+    List<Usuario> queryAllByListaRolesIsNotNull();
 
 }
