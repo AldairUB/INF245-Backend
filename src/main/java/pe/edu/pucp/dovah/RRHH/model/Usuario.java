@@ -1,5 +1,7 @@
 package pe.edu.pucp.dovah.RRHH.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import pe.edu.pucp.dovah.Gestion.model.Curso;
 import pe.edu.pucp.dovah.asignaciones.model.Documento;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
 
@@ -32,6 +34,10 @@ public abstract class Usuario {
 
     @OneToMany(mappedBy = "usuarioEntrega")
     List<Tarea> listaTareas;
+
+    @ManyToMany (mappedBy = "listaUsuarios")
+    @JsonBackReference
+    private List<Curso> listaCursos;
 
     @OneToMany(mappedBy = "usuario")
     private List<Documento>listaDocumentos;
@@ -135,5 +141,21 @@ public abstract class Usuario {
 
     public List<Documento> getListaDocumentos() {
         return listaDocumentos;
+    }
+
+    public void setListaTareas(List<Tarea> listaTareas) {
+        this.listaTareas = listaTareas;
+    }
+
+    public List<Curso> getListaCursos() {
+        return listaCursos;
+    }
+
+    public void setListaCursos(List<Curso> listaCursos) {
+        this.listaCursos = listaCursos;
+    }
+
+    public void setListaDocumentos(List<Documento> listaDocumentos) {
+        this.listaDocumentos = listaDocumentos;
     }
 }
