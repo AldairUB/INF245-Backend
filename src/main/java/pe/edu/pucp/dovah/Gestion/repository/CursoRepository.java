@@ -9,5 +9,10 @@ package pe.edu.pucp.dovah.Gestion.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pe.edu.pucp.dovah.Gestion.model.Curso;
 
+import java.util.List;
+
 public interface CursoRepository extends JpaRepository<Curso, Integer>{
+
+    List<Curso> queryAllByActivoIsTrue();
+
 }

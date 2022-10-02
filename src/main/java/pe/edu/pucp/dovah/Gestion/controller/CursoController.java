@@ -11,7 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.pucp.dovah.Gestion.model.Curso;
 import pe.edu.pucp.dovah.Gestion.repository.CursoRepository;
+import pe.edu.pucp.dovah.RRHH.model.Administrador;
+
+import java.util.List;
 
 @BasePathAwareController
 @RestController
@@ -23,6 +27,17 @@ public class CursoController {
 
     public CursoController(CursoRepository repository) {
         this.repository = repository;
+    }
+    /*
+
+        Listar todos los cursos activos
+
+    */
+    @GetMapping("/curso")
+    List<Curso> all(){
+
+        return repository.queryAllByActivoIsTrue();
+
     }
 
 
