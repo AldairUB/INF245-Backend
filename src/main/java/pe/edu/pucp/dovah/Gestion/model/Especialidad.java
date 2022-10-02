@@ -28,7 +28,8 @@ public class Especialidad {
     @JsonBackReference
     private Facultad facultad;
 
-    @OneToMany(mappedBy = "especialidad")
+    @OneToMany
+    @JsonManagedReference
     private List<Curso> cursos;
 
     protected Especialidad() {}
