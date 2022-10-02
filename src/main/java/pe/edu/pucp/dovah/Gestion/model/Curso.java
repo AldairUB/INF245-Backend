@@ -6,7 +6,10 @@
 */
 package pe.edu.pucp.dovah.Gestion.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import pe.edu.pucp.dovah.RRHH.model.Alumno;
+import pe.edu.pucp.dovah.RRHH.model.Usuario;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
 
 import javax.persistence.*;
@@ -29,16 +32,20 @@ public class Curso {
     private boolean activo;
 
     @ManyToOne
-    @JoinColumn(name="idEspecialidad")
+    @JsonBackReference
     private Especialidad especialidad;
 
     @ManyToOne
-    @JoinColumn(name="idSemestre")
+    @JsonBackReference
     private Semestre semestre;
 
     @OneToMany
     @JsonManagedReference
     private List<Tarea> tareas;
+
+    @ManyToMany
+    @JsonManagedReference
+    private List<Usuario> listaUsuarios;
 
 
     protected Curso() {}
@@ -132,5 +139,13 @@ public class Curso {
 
     public void setTareas(List<Tarea> tareas) {
         this.tareas = tareas;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return listaUsuarios;
+    }
+
+    public void setUsuarios(List<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
     }
 }
