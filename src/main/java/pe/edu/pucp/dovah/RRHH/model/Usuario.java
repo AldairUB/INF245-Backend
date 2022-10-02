@@ -32,8 +32,8 @@ public abstract class Usuario {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActivacion;
 
-    @ManyToMany
-    private List<Tarea> listaTareas;
+    @OneToMany(mappedBy = "usuarioEntrega")
+    List<Tarea> listaTareas;
 
     @ManyToMany (mappedBy = "listaUsuarios")
     @JsonBackReference

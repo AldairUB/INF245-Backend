@@ -4,9 +4,6 @@ import org.apache.tika.Tika;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -36,17 +33,17 @@ public class DocumentoController {
 
     @GetMapping("/documento")
     List<Documento> getAllDocuments() {
-        return documentoRepository.findAll();
+        return documentoRepository.queryAllByActivoIsTrue();
     }
 
     @GetMapping("/documento/{id}")
     Documento getOneDocument(@PathVariable Long id) {
-        return documentoRepository.findById(id).orElseThrow(() -> new DocumentoNotFoundException(id));
+        return documentoRepository.queryByIdAndActivoIsTrue(id).orElseThrow(() -> new DocumentoNotFoundException(id));
     }
 
     @GetMapping(value = "/documento/blob/{id}/{nombre}")
     ResponseEntity<StreamingResponseBody> getDocBlob(@PathVariable Long id, @PathVariable String nombre) {
-        Documento doc = documentoRepository.findByIdAndNombre(id, nombre)
+        Documento doc = documentoRepository.findByIdAndNombreAndActivoIsTrue(id, nombre)
                 .orElseThrow(() -> new DocumentoNotFoundException(id));
         StreamingResponseBody responseBody = outputStream -> outputStream.write(doc.getBlobDoc());
         Tika tika = new Tika();
@@ -65,6 +62,14 @@ public class DocumentoController {
         Documento doc = new Documento(json.getString("nombre"));
         byte[] blob = DatatypeConverter.parseBase64Binary(json.getString("base64"));
         doc.setBlobDoc(blob);
+        return documentoRepository.save(doc);
+    }
+
+    @DeleteMapping("/documento/eliminar/{id}")
+    Documento eliminarDocumento(@PathVariable Long id) {
+        Documento doc = documentoRepository
+                .queryByIdAndActivoIsTrue(id).orElseThrow(() -> new DocumentoNotFoundException(id));
+        doc.setActivo(false);
         return documentoRepository.save(doc);
     }
 }
