@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import pe.edu.pucp.dovah.RRHH.model.Usuario;
 
+import javax.crypto.Mac;
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRol;
     private String nombre;
-    @JsonManagedReference
-    @ManyToMany
+    @JsonBackReference
+    @ManyToMany(mappedBy = "listaRoles")
     List<Usuario> listaUsuarios;
 
     protected  Rol(){}

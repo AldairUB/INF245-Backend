@@ -29,12 +29,10 @@ import java.util.Map;
 public class RolController {
 
     private final RolRepository repositoryRol;
-    private final UsuarioRepository repositoryUsuario;
     private final static Logger log = LoggerFactory.getLogger(RolController.class);
     public RolController(RolRepository repository,UsuarioRepository usuarioRepository) {
 
         this.repositoryRol = repository;
-        this.repositoryUsuario = usuarioRepository;
 
     }
     /*
@@ -60,23 +58,12 @@ public class RolController {
     }
 
     @PostMapping("/rol")
-    Rol nuevoAdministrador(@RequestBody Map<String,Object> nuevoRol){
+    Rol nuevoRol(@RequestBody Map<String,Object> nuevoRol){
 
         log.info("Agregando Rol");
         var json = new JSONObject(nuevoRol);
         var rol = new Rol(json.getString("nombre"));
         return repositoryRol.save(rol);
 
-    }
-    @PostMapping("/rol/agregarUsuario")
-    Rol agregarDocumento(@RequestBody Map<String, Object> map) {
-        var json = new JSONObject(map);
-        int idRol = json.getInt("idRol");
-        int idUsuario = json.getInt("idUsuario");
-        var rol = repositoryRol.queryByIdRol(idRol).orElseThrow(() -> new RolNotFoundException(idRol));
-        var usuario = repositoryUsuario.findById(idUsuario)
-                .orElseThrow(() -> new UsuarioNotFoundException(idUsuario));
-        rol.getListaUsuarios().add(usuario);
-        return repositoryRol.save(rol);
     }
 }
