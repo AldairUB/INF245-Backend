@@ -39,14 +39,14 @@ public class UsuarioController {
     @GetMapping("/usuario")
     List<Usuario>listarTodos(){
 
-        return usuarioRepository.findAll();
+        return usuarioRepository.queryAllByListaRolesIsNotNull();
 
     }
 
     @GetMapping("/usuario/{id}")
     Usuario obtenerUsuarioPorId(@PathVariable int id){
 
-        return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
+        return usuarioRepository.queryAllByIdUsuario(id).orElseThrow(() -> new UsuarioNotFoundException(id));
 
     }
 
