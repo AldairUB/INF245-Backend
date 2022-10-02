@@ -29,8 +29,14 @@ public class Tarea {
     private int nota;
     private LocalDateTime fechaCreacion;
 
-    @ManyToMany(mappedBy = "listaTareas")
-    List<Usuario> listaUsuarios;
+    boolean activo;
+    boolean visible;
+
+    @ManyToMany
+    List<Usuario> listaUsuariosCorrigen;
+
+    @ManyToOne
+    Usuario usuarioEntrega;
 
     @JsonManagedReference
     @ManyToMany
@@ -48,6 +54,8 @@ public class Tarea {
         this.descripcion = descripcion;
         this.nota = 0;
         this.fechaCreacion = LocalDateTime.now();
+        this.activo = true;
+        this.visible = false;
     }
 
     @Override
@@ -87,10 +95,6 @@ public class Tarea {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public List<Usuario> getListaUsuarios() {
-        return listaUsuarios;
-    }
-
     public List<Documento> getListaDocumentos() {
         return listaDocumentos;
     }
@@ -109,5 +113,41 @@ public class Tarea {
 
     public void setCurso(Curso curso) {
         this.curso = curso;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public List<Usuario> getListaUsuariosCorrigen() {
+        return listaUsuariosCorrigen;
+    }
+
+    public void setListaUsuariosCorrigen(List<Usuario> listaUsuariosCorrigen) {
+        this.listaUsuariosCorrigen = listaUsuariosCorrigen;
+    }
+
+    public Usuario getUsuarioEntrega() {
+        return usuarioEntrega;
+    }
+
+    public void setUsuarioEntrega(Usuario usuarioEntrega) {
+        this.usuarioEntrega = usuarioEntrega;
+    }
+
+    public void setListaDocumentos(List<Documento> listaDocumentos) {
+        this.listaDocumentos = listaDocumentos;
     }
 }

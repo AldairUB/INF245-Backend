@@ -30,8 +30,8 @@ public abstract class Usuario {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActivacion;
 
-    @ManyToMany
-    private List<Tarea> listaTareas;
+    @OneToMany(mappedBy = "usuarioEntrega")
+    List<Tarea> listaTareas;
 
     @OneToMany(mappedBy = "usuario")
     private List<Documento>listaDocumentos;

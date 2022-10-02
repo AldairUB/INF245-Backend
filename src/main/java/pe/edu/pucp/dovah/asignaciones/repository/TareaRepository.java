@@ -11,9 +11,12 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pe.edu.pucp.dovah.asignaciones.model.Tarea;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TareaRepository extends JpaRepository<Tarea, Long> {
     @EntityGraph(attributePaths = {"listaDocumentos"})
-    Optional<Tarea> queryById(Long id);
+    Optional<Tarea> queryByIdAndActivoIsTrue(Long id);
+
+    List<Tarea> queryAllByActivoIsTrue();
 }
