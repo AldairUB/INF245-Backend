@@ -15,6 +15,7 @@ import pe.edu.pucp.dovah.RRHH.exceptions.UsuarioNotFoundException;
 import pe.edu.pucp.dovah.RRHH.model.Usuario;
 import pe.edu.pucp.dovah.RRHH.repository.UsuarioRepository;
 import pe.edu.pucp.dovah.Reglas.exception.RolNotFoundException;
+import pe.edu.pucp.dovah.Reglas.model.Rol;
 import pe.edu.pucp.dovah.Reglas.repository.RolRepository;
 
 import java.util.List;
@@ -62,6 +63,24 @@ public class UsuarioController {
         usuario.getListaRoles().add(rol);
         return usuarioRepository.save(usuario);
 
+    }
+    @PostMapping("/usuario/eliminarRol")
+    Usuario eliminarRol(@RequestBody Map<String, Object> map){
+    int cont=0;
+    var json = new JSONObject(map);
+    int idRol = json.getInt("idRol");
+    var rol = rolRepository.findById(idRol).orElseThrow(() -> new RolNotFoundException(idRol));
+    int idUsuario = json.getInt("idUsuario");
+    var usuario = usuarioRepository.queryAllByIdUsuario(idUsuario).orElseThrow(()->
+                new UsuarioNotFoundException(idUsuario));
+    for(Rol roles : usuario.getListaRoles()){
+        if(roles.getIdRol() == rol.getIdRol()){
+            usuario.getListaRoles().remove(cont);
+            break;
+        }
+        cont++;
+    }
+        return usuarioRepository.save(usuario);
     }
 
 }

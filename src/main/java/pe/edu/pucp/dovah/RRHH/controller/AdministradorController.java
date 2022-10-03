@@ -88,4 +88,24 @@ public class AdministradorController {
 
     }
 
+    @PostMapping("/administrador/modificar")
+    Administrador modificarAdministrador(@RequestBody Map<String, Object>map){
+
+        var json = new JSONObject(map);
+        int id = json.getInt("idAdministrador");
+        var administrador = repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
+        log.info(String.format("Modificando administrador con id '%d'",
+                administrador.getIdUsuario()));
+        var administradorAux = new Administrador(json.getString("nombre"),json.getString("apellido"),
+                json.getString("genero").charAt(0), json.getString("codigoPUCP"),
+                json.getString("correo"),json.getString("password"));
+        administrador.setGenero(administradorAux.getGenero());
+        administrador.setNombre(administradorAux.getNombre());
+        administrador.setApellido(administradorAux.getApellido());
+        administrador.setCorreo(administradorAux.getCorreo());
+        administrador.setCodigoPUCP(administradorAux.getCodigoPUCP());
+        administrador.setPassword(administradorAux.getPassword());
+        return repository.save(administrador);
+    }
+
 }
