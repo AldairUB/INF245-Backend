@@ -57,11 +57,16 @@ public class ProfesorController {
 
 
 
-    @DeleteMapping("/profesor/{id}")
-    void eliminarProfesor(@PathVariable int id){
+    @PostMapping("/profesor/eliminar")
+    Profesor eliminarProfesor(@RequestBody Map<String, Object>map){
 
-        repository.deleteById(id);
-
+        var json = new JSONObject(map);
+        int id = json.getInt("idProfesor");
+        var profesor = repository.findById(id).orElseThrow(()->new UsuarioNotFoundException(id));
+        log.info(String.format("Eliminado profesor con id '%d'",
+                profesor.getIdUsuario()));
+        profesor.setActivo(false);
+        return repository.save(profesor);
     }
     /*
         Insertar nuevo profesor
@@ -89,5 +94,29 @@ public class ProfesorController {
 
 
     }
+
+    @PostMapping("/profesor/modificar")
+    Profesor modificarProfesor(@RequestBody Map<String, Object>map){
+
+        var json = new JSONObject(map);
+        int id = json.getInt("idProfesor");
+        var profesor = repository.findById(id).orElseThrow(()->new UsuarioNotFoundException(id));
+        log.info(String.format("Eliminado profesor con id '%d'",
+                profesor.getIdUsuario()));
+        var profesorAux = new Profesor(json.getString("nombre"),json.getString("apellido"),
+                json.getString("genero").charAt(0),json.getString("codigoPUCP"),
+                json.getString("correo"),json.getString("urlDisponibilidad"),
+                json.getString("password"));
+
+        profesor.setGenero(profesorAux.getGenero());
+        profesor.setNombre(profesorAux.getNombre());
+        profesor.setApellido(profesorAux.getApellido());
+        profesor.setCorreo(profesorAux.getCorreo());
+        profesor.setCodigoPUCP(profesorAux.getCodigoPUCP());
+        profesor.setPassword(profesorAux.getPassword());
+        profesor.setUrlDisponibilidad(profesorAux.getUrlDisponibilidad());
+        return repository.save(profesor);
+    }
+
 
 }
